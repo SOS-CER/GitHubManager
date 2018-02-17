@@ -5,6 +5,7 @@
 * [Add Users to GitHub Teams](#add-users-to-github-teams)
 * [Update Team Permissions](#update-team-permissions)
 * [Cloning Repositories](#cloning-all-repositories)
+* [Automating Using Crontab](#automating-using-crontab)
 
 ### Configuration File
 All local configurations should be stored in a file named `config.properties`.  Copy the `config.properties.empty` and create a new file `config.properties`.
@@ -72,3 +73,22 @@ NUMSTUDENTS = 80                 // Number of repositories that match the above 
 ```
 
 * Save your changes, then compile and execute the `clone_repos.py` script to clone all of the repositories that match the criteria above.
+
+### Automating Using Crontab
+You can automate repository assignments and/or team permission updates (for example, switch team access to read-only after a project deadline).
+
+Create a batch script similar to the following `permissions.sh` script:
+```bash
+#!/bin/bash
+
+cd /var/lib/jenkins/scripts/workbench_scripts/
+java TeamPermissionsUI csc216-651-GP3
+echo "DONE!"
+```
+
+Next, update your crontab to schedule the script to run:
+```
+45 23 1 9 * /var/lib/jenkins/scripts/workbench_scripts/permissions.sh
+```
+
+**NOTE** that you will need to update the team prefix in the `permissions.sh` file for each set of team permissions you wish to update.
